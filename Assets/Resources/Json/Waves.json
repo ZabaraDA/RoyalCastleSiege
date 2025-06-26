@@ -1,0 +1,55 @@
+{
+  "value": [
+    {
+      "id": 1,
+      "enemys": [
+        {
+          "enemyid": 1,
+          "count": 5
+        },
+        {
+          "enemyid": 2,
+          "count": 0
+        },
+        {
+          "enemyid": 3,
+          "count": 0
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "enemys": [
+        {
+          "enemyid": 1,
+          "count": 10
+        },
+        {
+          "enemyid": 2,
+          "count": 3
+        },
+        {
+          "enemyid": 3,
+          "count": 0
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "enemys": [
+        {
+          "enemyid": 1,
+          "count": 15
+        },
+        {
+          "enemyid": 2,
+          "count": 5
+        },
+        {
+          "enemyid": 3,
+          "count": 3
+        }
+      ]
+    }
+  ]
+}
