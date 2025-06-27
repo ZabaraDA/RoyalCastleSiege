@@ -8,8 +8,6 @@ public class JsonReaderService
     {
         TextAsset text = Resources.Load<TextAsset>(path);
         var jsonContainer = JsonConvert.DeserializeObject<JsonContainer<T>>(text.text);
-
         return jsonContainer.Value;
-
     }
 }

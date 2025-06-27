@@ -1,0 +1,22 @@
+{
+  "value": [
+    {
+      "id": 1,
+      "healt": 3,
+      "speed": 100,
+      "damage": 1
+    },
+    {
+      "id": 2,
+      "healt": 3,
+      "speed": 200,
+      "damage": 2
+    },
+    {
+      "id": 3,
+      "healt": 10,
+      "speed": 100,
+      "damage": 3
+    }
+  ]
+}

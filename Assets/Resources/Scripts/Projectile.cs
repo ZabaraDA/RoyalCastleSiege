@@ -36,7 +36,7 @@ public class Projectile : MonoBehaviour
         // Проверяем, является ли объект, с которым столкнулись, врагом
         if (other.CompareTag("Enemy"))
         {
-            EnemyView enemy = other.GetComponent<EnemyView>();
+            EnemyMB enemy = other.GetComponent<EnemyMB>();
             if (enemy != null)
             {
                 enemy.TakeDamage(damage); // Наносим урон врагу

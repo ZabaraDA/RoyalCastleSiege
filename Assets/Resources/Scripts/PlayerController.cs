@@ -105,31 +105,4 @@ public class PlayerController : MonoBehaviour
             bowTransform.rotation = Quaternion.Euler(0, 0, finalBowAngle);
         }
     }
-
-    // Метод для стрельбы
-    void Shoot(Vector3 clickPosition)
-    {
-        // Направление снаряда от FirePoint до позиции клика
-        Vector2 projectileDirection = (clickPosition - firePoint.position).normalized;
-
-        // Создаем снаряд из префаба в точке стрельбы FirePoint
-        GameObject projectileGO = Instantiate(projectilePrefab, firePoint.position, Quaternion.identity);
-
-        // Получаем компонент Projectile и устанавливаем его направление
-        Projectile projectile = projectileGO.GetComponent<Projectile>();
-        if (projectile != null)
-        {
-            // Устанавливаем направление снаряда и его начальный поворот
-            // Поворот снаряда должен совпадать с направлением выстрела
-            float projectileAngle = Mathf.Atan2(projectileDirection.y, projectileDirection.x) * Mathf.Rad2Deg;
-            projectileGO.transform.rotation = Quaternion.Euler(0, 0, projectileAngle);
-
-            projectile.SetDirection(projectileDirection);
-        }
-        else
-        {
-            Debug.LogError("Префаб снаряда не содержит скрипт Projectile!");
-        }
-    }
-
 }

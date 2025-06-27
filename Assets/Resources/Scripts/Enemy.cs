@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class EnemyView : MonoBehaviour
+public class EnemyMB : MonoBehaviour
 {
     [Header("Настройки врага")]
     [SerializeField] private float moveSpeed = 2f; // Скорость передвижения врага
