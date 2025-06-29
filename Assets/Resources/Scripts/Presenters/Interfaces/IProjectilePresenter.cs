@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public interface IProjectilePresenter : IDisposable, IInitializable
+public interface IProjectilePresenter : IDisposable, IInitializable, IUpdatable
 {
-    
+
 }

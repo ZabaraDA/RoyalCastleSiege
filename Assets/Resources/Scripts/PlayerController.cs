@@ -57,7 +57,7 @@ public class PlayerController : MonoBehaviour
             // Проверяем, можем ли мы стрелять
             if (Time.time >= nextFireTime)
             {
-                Shoot(mousePosition);
+                //Shoot(mousePosition);
                 nextFireTime = Time.time + 1f / fireRate; // Обновляем время следующей стрельбы
             }
         }

@@ -1,38 +1,32 @@
+using System;
 using UnityEngine;
 
 public class ProjectileView : MonoBehaviour, IProjectileView
 {
-    private Vector2 moveDirection; // Направление движения снаряда
-
-    void Start()
-    {
-    }
+    public event Action<Collider2D> OnViewCollider2DTriggered;
 
     void Update()
     {
-        // Двигаем снаряд в заданном направлении
-        // transform.Translate(moveDirection * speed * Time.deltaTime, Space.World);
+
     }
 
-    // Метод для установки направления движения снаряда
-    public void SetDirection(Quaternion quaternion)
+    public void SetPosition(Vector2 newPosition)
     {
-        transform.rotation = quaternion;
-        
+        transform.position = newPosition;
     }
 
-    // Обнаружение столкновений с триггерами (например, с врагами)
+    public void SetRotation(Quaternion newRotation)
+    {
+        transform.rotation = newRotation;
+    }
+
+    public GameObject GetGameObject()
+    {
+        return gameObject;
+    }
+
     void OnTriggerEnter2D(Collider2D other)
     {
-        // Проверяем, является ли объект, с которым столкнулись, врагом
-        if (other.CompareTag("Enemy"))
-        {
-            EnemyView enemyView = other.GetComponent<EnemyView>();
-            if (enemyView != null)
-            {
-                //enemyView.TakeDamage(damage); // Наносим урон врагу
-            }
-            Destroy(gameObject); // Уничтожаем снаряд после столкновения
-        }
+        OnViewCollider2DTriggered?.Invoke(other);
     }
 }
