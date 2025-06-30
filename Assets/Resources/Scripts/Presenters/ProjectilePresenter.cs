@@ -40,42 +40,32 @@ public class ProjectilePresenter : IProjectilePresenter
         }
         else
         {
-            DestroyProjectile(); // Если модель "умерла" по времени жизни
+            DestroyProjectile();
         }
     }
 
     private void HandleViewCollision(Collider2D other)
     {
-        // Презентер решает, что делать при столкновении
         if (other.CompareTag("Enemy"))
         {
-            // Получаем компонент Enemy. В идеале, это будет EnemyPresenter или EnemyModel,
-            // но пока используем существующий Enemy.cs для простоты.
             IEnemyView enemy = other.GetComponent<IEnemyView>();
             if (enemy != null)
             {
-                enemy.TakeDamage(_model.Type.Damage); // Модель врага получает урон
+                enemy.TakeDamage(_model.Type.Damage);
             }
         }
-        // В любом случае, после столкновения снаряд уничтожается
         DestroyProjectile();
     }
 
     private void DestroyProjectile()
     {
-        // Отписываемся от событий, чтобы избежать утечек памяти
         _view.OnViewCollider2DTriggered -= HandleViewCollision;
-
-
-        // Отменяем регистрацию этого Presenter из менеджера обновлений
         _manager.UnregisterProjectilePresenter(this);
-        // Уничтожаем GameObject представления
-        //Object.Destroy(_view.GetGameObject());
+
     }
 
     public void Dispose()
     {
-        // Логика для очистки ресурсов при уничтожении Presenter'а
-        DestroyProjectile(); // Убеждаемся, что все очищено
+        DestroyProjectile();
     }
 }

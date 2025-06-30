@@ -3,7 +3,7 @@ using UnityEngine;
 public interface IProjectileModel
 {
     int Id { get; set; }
-    bool IsAlive { get; } // Жива ли стрела
+    bool IsAlive { get; } 
     Vector2 Position { get; set; }
     Vector2 Direction { get; set; }
     IProjectileTypeModel Type { get; set; }

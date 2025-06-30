@@ -1,7 +1,7 @@
 using Newtonsoft.Json;
 using UnityEngine;
 
-public class EnemyType
+public class EnemyTypeData
 {
     [JsonProperty("id")]
     public int Id;

@@ -27,7 +27,7 @@ public class PlayerModel : IPlayerModel
             {
                 _projectileType = value;
                 OnModelProjectileTypeChanged?.Invoke(_projectileType);
-                Debug.Log($"Field '{nameof(Projectile)}' changed in model");
+                Debug.Log($"Field '{nameof(ProjectileType)}' changed in model");
             }
         }
     }

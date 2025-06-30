@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class WaveView : IWaveView
+public class WaveView : MonoBehaviour, IWaveView
 {
     
 }

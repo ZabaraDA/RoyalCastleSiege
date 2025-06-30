@@ -3,5 +3,9 @@ using UnityEngine;
 
 public interface IWaveModel
 {
-    ICollection<IEnemyModel> Enemies { get; set; }
+    int Number { get; set; }
+    ICollection<IEnemyCountModel> EnemiesCount { get; set; }
+    List<Vector2> SpawnPositions { get; set; }
+    Vector2 TargetPosition { get; set; }
+    void Start();
 }

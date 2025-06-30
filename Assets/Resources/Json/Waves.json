@@ -1,7 +1,7 @@
 {
   "value": [
     {
-      "id": 1,
+      "number": 1,
       "enemys": [
         {
           "enemyid": 1,
@@ -18,7 +18,7 @@
       ]
     },
     {
-      "id": 2,
+      "number": 2,
       "enemys": [
         {
           "enemyid": 1,
@@ -35,7 +35,7 @@
       ]
     },
     {
-      "id": 3,
+      "number": 3,
       "enemys": [
         {
           "enemyid": 1,

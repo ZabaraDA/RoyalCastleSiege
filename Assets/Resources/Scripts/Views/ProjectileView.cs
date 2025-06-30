@@ -5,11 +5,6 @@ public class ProjectileView : MonoBehaviour, IProjectileView
 {
     public event Action<Collider2D> OnViewCollider2DTriggered;
 
-    void Update()
-    {
-
-    }
-
     public void SetPosition(Vector2 newPosition)
     {
         transform.position = newPosition;

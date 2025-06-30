@@ -3,10 +3,21 @@ using UnityEngine;
 
 public class WaveModel : IWaveModel
 {
-    public ICollection<IEnemyModel> Enemies { get; set; }
-    public WaveModel(ICollection<IEnemyModel> enemies)
+    public ICollection<IEnemyCountModel> EnemiesCount { get; set; }
+    public List<Vector2> SpawnPositions { get; set; }
+    public Vector2 TargetPosition { get; set; }
+    public int Number { get; set; }
+
+    public WaveModel(int number, ICollection<IEnemyCountModel> enemiesCount, List<Vector2> spawnPositions, Vector2 targetPosition)
     {
-        Enemies = enemies;
+        Number = number;
+        EnemiesCount = enemiesCount;
+        SpawnPositions = spawnPositions;
+        TargetPosition = targetPosition;
     }
 
+    public void Start()
+    {
+
+    }
 }

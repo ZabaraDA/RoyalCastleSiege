@@ -4,16 +4,13 @@ public class ProjectileFactory : IProjectileFactory // Или чистый C# класс с инж
 {
     private ProjectileLifeCycleManager _manager; // Ссылка на менеджер
 
-    public ProjectileFactory(ProjectileLifeCycleManager manager, GameObject projectilePrefab)
+    public ProjectileFactory(ProjectileLifeCycleManager manager)
     {
         _manager = manager;
     }
 
     public IProjectilePresenter CreateProjectile(IProjectileModel projectileModel)
     {
-        // 1. Создаем модель
-        //Vector2 normalizedDirection = projectileModel.Direction.normalized;
-        // 2. Создаем View (это единственное место, где вызывается Instantiate)
         float angle = Mathf.Atan2(projectileModel.Direction.y, projectileModel.Direction.x) * Mathf.Rad2Deg;
         Quaternion quaternion = Quaternion.Euler(new Vector3(0, 0, angle - 90));
 

@@ -1,7 +1,7 @@
 using Newtonsoft.Json;
 using System.Collections.Generic;
 
-public class Wave
+public class WaveData
 {
     [JsonProperty("number")]
     public int Number;
@@ -12,7 +12,7 @@ public class Wave
 public class EnemyCount
 {
     [JsonProperty("enemyid")]
-    public int EnemyId;
+    public int EnemyTypeId;
     [JsonProperty("count")]
     public int Count;
 }

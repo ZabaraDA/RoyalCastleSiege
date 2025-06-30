@@ -11,9 +11,11 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private GameObject _playerGameObject;
     [SerializeField]
-    private ProjectileLifeCycleManager _manager; // —сылка на менеджер
+    private ProjectileLifeCycleManager _projectileLifeCycleManager;
     [SerializeField]
-    private GameObject _projectilePrefab;
+    private EnemyLifeCycleManager _enemyLifeCycleManager;
+    [SerializeField]
+    private GameObject _spawnContainer;
 
 
 
@@ -31,6 +33,8 @@ public class GameManager : MonoBehaviour
                 Speed = type.Speed,
             });
         }
+
+        Debug.Log("Enemy types: " + enemyTypes.Count);
         ICollection<IProjectileTypeModel> projectileModels = new List<IProjectileTypeModel>();
         foreach (ProjectileTypeData projectileType in GetProjectileTypesInJson())
         {
@@ -39,29 +43,31 @@ public class GameManager : MonoBehaviour
 
         ICollection<IWaveModel> waveModels = new List<IWaveModel>();
 
+        List<Vector2> spawnPosition = new List<Vector2>();
+
+        foreach (Transform child in _spawnContainer.transform)
+        {
+            Vector3 childWorldPosition = child.position;
+            Vector2 childPosition2D = new Vector2(childWorldPosition.x, childWorldPosition.y);
+
+            spawnPosition.Add(childPosition2D);
+        }
+
         foreach (var wave in GetWavesInJson())
         {
-            ICollection<IEnemyModel> enemyModels = new List<IEnemyModel>();
+            ICollection<IEnemyCountModel> enemyModels = new List<IEnemyCountModel>();
             foreach (var enemyCount in wave.EnemyCountList)
             {
-                IEnemyTypeModel type = enemyTypes.FirstOrDefault(x => x.Id == enemyCount.EnemyId);
-                for (int i = 1; i <= enemyCount.Count; i++)
-                {
-                    IEnemyModel enemyModel = new EnemyModel()
-                    {
-                        Healt = type.Healt,
-                        Type = type,
-                        Number = i,
-                    };
-                    enemyModels.Add(enemyModel);
-                }
+                IEnemyTypeModel enemyTypeModel = enemyTypes.FirstOrDefault(x => x.Id == enemyCount.EnemyTypeId);
+                IEnemyCountModel enemyModel = new EnemyCountModel(enemyTypeModel, enemyCount.Count);
+                enemyModels.Add(enemyModel);
             }
-            IWaveModel waveModel = new WaveModel(enemyModels);
+            IWaveModel waveModel = new WaveModel(wave.Number, enemyModels, spawnPosition, _playerGameObject.transform.position);
             waveModels.Add(waveModel);
         }
         
 
-        IProjectileFactory projectileFactory = new ProjectileFactory(_manager, _projectilePrefab);
+        IProjectileFactory projectileFactory = new ProjectileFactory(_projectileLifeCycleManager);
         IPlayerModel playerModel = new PlayerModel()
         {
             Healt = 100,
@@ -71,23 +77,25 @@ public class GameManager : MonoBehaviour
         IPlayerPresenter playerPresenter = new PlayerPresenter(playerView, playerModel, projectileFactory);
         playerPresenter.Initialize();
 
+        IEnemyFactory enemyFactory = new EnemyFactory(_enemyLifeCycleManager);    
+        IWaveFactory waveFactory = new WaveFactory(enemyFactory);
         IGameModel gameModel = new GameModel(waveModels, playerModel);
         IGameView gameView = _gameContainerGameObject.GetComponent<GameView>();
-        IGamePresenter gamePresenter = new GamePresenter(gameView, gameModel);
+        IGamePresenter gamePresenter = new GamePresenter(gameView, gameModel, waveFactory);
 
         gamePresenter.Initialize();
     }
 
-    private ICollection<Wave> GetWavesInJson()
+    private ICollection<WaveData> GetWavesInJson()
     {
-        return JsonReaderService.ReadJsonInResources<ICollection<Wave>>("Json/Waves");
+        return JsonReaderService.ReadJsonInResources<ICollection<WaveData>>("Json/Waves");
     }
-    private ICollection<EnemyType> GetEnemyTypesInJson()
+    private ICollection<EnemyTypeData> GetEnemyTypesInJson()
     {
-        return JsonReaderService.ReadJsonInResources<ICollection<EnemyType>>("Json/EnemyTypes");
+        return JsonReaderService.ReadJsonInResources<ICollection<EnemyTypeData>>("Json/EnemyTypes");
     }
     private ICollection<ProjectileTypeData> GetProjectileTypesInJson()
     {
-        return JsonReaderService.ReadJsonInResources<ICollection<ProjectileTypeData>>("Json/EnemyTypes");
+        return JsonReaderService.ReadJsonInResources<ICollection<ProjectileTypeData>>("Json/ProjectileTypes");
     }
 }
