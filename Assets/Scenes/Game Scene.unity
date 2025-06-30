@@ -643,10 +643,10 @@ RectTransform:
   - {fileID: 2061897581}
   m_Father: {fileID: 695272760}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 923.3334, y: -90}
-  m_SizeDelta: {x: 220, y: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 923.3334, y: 0}
+  m_SizeDelta: {x: 220, y: 220}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &300809683
 MonoBehaviour:
@@ -1989,6 +1989,37 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 8234329701317745479, guid: 2a80016bd91f9a64b81ff9bf83eb7e7d, type: 3}
   m_PrefabInstance: {fileID: 1044126659}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1149316924
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1149316925}
+  m_Layer: 0
+  m_Name: Projectile Factory
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1149316925
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1149316924}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1408973478}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1265801712
 GameObject:
   m_ObjectHideFlags: 0
@@ -2217,6 +2248,7 @@ Transform:
   - {fileID: 1265801713}
   - {fileID: 2070621023}
   - {fileID: 667380184}
+  - {fileID: 1149316925}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1408973479
@@ -2357,10 +2389,10 @@ RectTransform:
   - {fileID: 1571086339}
   m_Father: {fileID: 695272760}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 196.66667, y: -89.06685}
-  m_SizeDelta: {x: 300, y: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 196.66667, y: 0}
+  m_SizeDelta: {x: 300, y: 221.8663}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1466922676
 MonoBehaviour:
@@ -3570,6 +3602,7 @@ MonoBehaviour:
   _gameContainerGameObject: {fileID: 515534116}
   _playerGameObject: {fileID: 1883492054}
   _manager: {fileID: 667380185}
+  _projectilePrefab: {fileID: 6596220021751758635, guid: a800bb373e1fa194b96b9231a9e1c2e0, type: 3}
 --- !u!1 &2112124062
 GameObject:
   m_ObjectHideFlags: 0

@@ -19,8 +19,8 @@ public class ProjectilePresenter : IProjectilePresenter
 
         // ”станавливаем начальное состо€ние View
         _view.SetPosition(_model.Position);
-        float initialAngle = Mathf.Atan2(_model.Direction.y, _model.Direction.x) * Mathf.Rad2Deg;
-        _view.SetRotation(Quaternion.Euler(0, 0, initialAngle));
+        //float initialAngle = Mathf.Atan2(_model.Direction.y, _model.Direction.x) * Mathf.Rad2Deg;
+        //_view.SetRotation(Quaternion.Euler(0, 0, initialAngle - 90));
 
         // –егистрируем этот Presenter дл€ получени€ обновлений
         _manager.RegisterProjectilePresenter(this);
@@ -36,7 +36,7 @@ public class ProjectilePresenter : IProjectilePresenter
             _view.SetPosition(_model.Position);
             // ѕоворот снар€да должен посто€нно совпадать с направлением его движени€
             float currentAngle = Mathf.Atan2(_model.Direction.y, _model.Direction.x) * Mathf.Rad2Deg;
-            _view.SetRotation(Quaternion.Euler(0, 0, currentAngle));
+            _view.SetRotation(Quaternion.Euler(0, 0, currentAngle - 90));
         }
         else
         {
@@ -54,7 +54,7 @@ public class ProjectilePresenter : IProjectilePresenter
             IEnemyView enemy = other.GetComponent<IEnemyView>();
             if (enemy != null)
             {
-                enemy.TakeDamage(_model.Damage); // ћодель врага получает урон
+                enemy.TakeDamage(_model.Type.Damage); // ћодель врага получает урон
             }
         }
         // ¬ любом случае, после столкновени€ снар€д уничтожаетс€

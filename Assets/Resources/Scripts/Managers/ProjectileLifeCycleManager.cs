@@ -13,6 +13,7 @@ public class ProjectileLifeCycleManager : MonoBehaviour
 
     private void Update()
     {
+        //Debug.Log("_activePresenters.Count: " + _activePresenters.Count);
         // Обновляем все активные презентеры
         for (int i = _activePresenters.Count - 1; i >= 0; i--) // Идем в обратном порядке для безопасного удаления
         {

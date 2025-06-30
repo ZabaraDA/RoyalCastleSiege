@@ -4,7 +4,7 @@ using UnityEngine;
 public interface IPlayerModel
 {
     int Healt { get; set; }
-    IProjectileModel Projectile { get; set; }
+    IProjectileTypeModel ProjectileType { get; set; }
     event Action<int> OnModelHealtChanged;
-    event Action<IProjectileModel> OnModelProjectileChanged;
+    event Action<IProjectileTypeModel> OnModelProjectileTypeChanged;
 }

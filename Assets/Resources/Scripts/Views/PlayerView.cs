@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using static UnityEngine.RuleTile.TilingRuleOutput;
 
 public class PlayerView : MonoBehaviour, IPlayerView
 {
@@ -17,6 +16,8 @@ public class PlayerView : MonoBehaviour, IPlayerView
         {
             Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             mousePosition.z = 0;
+
+            Debug.Log("PlayerView position: " + mousePosition);
             OnViewMouseButtonClick?.Invoke(mousePosition, _firePointGameObject.transform.position);
         }
     }

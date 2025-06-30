@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class ProjectileType
+public class ProjectileTypeData
 {
     public int Id;
     public int Damage;

@@ -18,21 +18,21 @@ public class PlayerModel : IPlayerModel
         }
     }
 
-    public IProjectileModel Projectile
+    public IProjectileTypeModel ProjectileType
     {
-        get => _projectile;
+        get => _projectileType;
         set
         {
-            if (_projectile != value)
+            if (_projectileType != value)
             {
-                _projectile = value;
-                OnModelProjectileChanged?.Invoke(_projectile);
+                _projectileType = value;
+                OnModelProjectileTypeChanged?.Invoke(_projectileType);
                 Debug.Log($"Field '{nameof(Projectile)}' changed in model");
             }
         }
     }
-    private IProjectileModel _projectile { get; set; }
+    private IProjectileTypeModel _projectileType { get; set; }
 
     public event Action<int> OnModelHealtChanged;
-    public event Action<IProjectileModel> OnModelProjectileChanged;
+    public event Action<IProjectileTypeModel> OnModelProjectileTypeChanged;
 }
