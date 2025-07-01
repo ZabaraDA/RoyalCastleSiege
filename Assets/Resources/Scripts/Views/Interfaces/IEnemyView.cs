@@ -9,5 +9,6 @@ public interface IEnemyView
     GameObject GetGameObject();
 
     event Action<Collider2D> OnViewCollider2DTriggered;
+    event Action<int> OnViewTakeDamageTriggered;
     void TakeDamage(int damage);
 }

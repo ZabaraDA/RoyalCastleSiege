@@ -3,6 +3,6 @@ using UnityEngine;
 
 public interface IWavePresenter : IInitializable, IDisposable
 {
-    void Start();
+    void StartWave();
     event Action<IWaveModel> OnPresenterWaveCompleted;
 }

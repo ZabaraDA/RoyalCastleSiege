@@ -11,4 +11,6 @@ public class EnemyTypeData
     public int Speed;
     [JsonProperty("damage")]
     public int Damage;
+    [JsonProperty("prize")]
+    public int Prize;
 }

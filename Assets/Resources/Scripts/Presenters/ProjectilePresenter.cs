@@ -14,15 +14,9 @@ public class ProjectilePresenter : IProjectilePresenter
 
     public void Initialize()
     {
-        // Подписываемся на события View
-        _view.OnViewCollider2DTriggered += HandleViewCollision;
-
-        // Устанавливаем начальное состояние View
+        _view.OnViewCollider2DTriggered += HandleOnViewCollider2DTriggered;
         _view.SetPosition(_model.Position);
-        //float initialAngle = Mathf.Atan2(_model.Direction.y, _model.Direction.x) * Mathf.Rad2Deg;
-        //_view.SetRotation(Quaternion.Euler(0, 0, initialAngle - 90));
 
-        // Регистрируем этот Presenter для получения обновлений
         _manager.RegisterProjectilePresenter(this);
     }
 
@@ -40,32 +34,33 @@ public class ProjectilePresenter : IProjectilePresenter
         }
         else
         {
-            DestroyProjectile();
+            DestroyEnemy();
         }
     }
 
-    private void HandleViewCollision(Collider2D other)
+    private void DestroyEnemy()
+    {
+        _view.OnViewCollider2DTriggered -= HandleOnViewCollider2DTriggered;
+        _manager.UnregisterProjectilePresenter(this);
+        if (_view.GetGameObject() != null)
+        {
+            MonoBehaviour.Destroy(_view.GetGameObject());
+        }
+    }
+    private void HandleOnViewCollider2DTriggered(Collider2D other)
     {
         if (other.CompareTag("Enemy"))
         {
-            IEnemyView enemy = other.GetComponent<IEnemyView>();
-            if (enemy != null)
+            if (other.TryGetComponent<IEnemyView>(out var enemy))
             {
                 enemy.TakeDamage(_model.Type.Damage);
             }
+            DestroyEnemy();
         }
-        DestroyProjectile();
-    }
-
-    private void DestroyProjectile()
-    {
-        _view.OnViewCollider2DTriggered -= HandleViewCollision;
-        _manager.UnregisterProjectilePresenter(this);
-
     }
 
     public void Dispose()
     {
-        DestroyProjectile();
+        DestroyEnemy();
     }
 }

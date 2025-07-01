@@ -3,10 +3,12 @@ using UnityEngine;
 public class WaveFactory : IWaveFactory
 {
     private IEnemyFactory _enemyFactory;
+    private MonoBehaviour _corutineRunner;
 
-    public WaveFactory(IEnemyFactory enemyFactory)
+    public WaveFactory(IEnemyFactory enemyFactory, MonoBehaviour corutineRunner)
     {
         _enemyFactory = enemyFactory;
+        _corutineRunner = corutineRunner;
     }
     public IWavePresenter CreateWave(IWaveModel waveModel)
     {
@@ -16,7 +18,7 @@ public class WaveFactory : IWaveFactory
 
         IWaveView view = projectile.GetComponent<IWaveView>();
 
-        IWavePresenter presenter = new WavePresenter(view, waveModel, _enemyFactory);
+        IWavePresenter presenter = new WavePresenter(view, waveModel, _enemyFactory, _corutineRunner);
         presenter.Initialize(); // Инициализируем презентер
 
         return presenter;

@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class EnemyPresenter : IEnemyPresenter
@@ -5,6 +6,9 @@ public class EnemyPresenter : IEnemyPresenter
     private IEnemyView _view;
     private IEnemyModel _model;
     private EnemyLifeCycleManager _manager;
+
+    public event Action<IEnemyModel> OnPresenterEnemyDestoyed;
+
     public EnemyPresenter(IEnemyView view, IEnemyModel model, EnemyLifeCycleManager manager)
     {
         _view = view;
@@ -15,12 +19,12 @@ public class EnemyPresenter : IEnemyPresenter
     public void Initialize()
     {
         // ѕодписываемс€ на событи€ View
-        _view.OnViewCollider2DTriggered += HandleViewCollision;
+        _view.OnViewCollider2DTriggered += HandleOnViewCollider2DTriggered;
+        _view.OnViewTakeDamageTriggered += HandleOnViewTakeDamageTriggered;
+        _model.OnModelHealtsChanged += HandleOnModelHealtsChanged;
 
         // ”станавливаем начальное состо€ние View
         _view.SetPosition(_model.Position);
-        //float initialAngle = Mathf.Atan2(_model.Direction.y, _model.Direction.x) * Mathf.Rad2Deg;
-        //_view.SetRotation(Quaternion.Euler(0, 0, initialAngle - 90));
 
         // –егистрируем этот Presenter дл€ получени€ обновлений
         _manager.RegisterEnemyPresenter(this);
@@ -32,11 +36,7 @@ public class EnemyPresenter : IEnemyPresenter
 
         if (_model.IsAlive)
         {
-            // ќбновл€ем позицию и поворот представлени€ на основе модели
             _view.SetPosition(_model.Position);
-            // ѕоворот снар€да должен посто€нно совпадать с направлением его движени€
-            //float currentAngle = Mathf.Atan2(_model.TargetPosition.y, _model.TargetPosition.x) * Mathf.Rad2Deg;
-            //_view.SetRotation(Quaternion.Euler(0, 0, currentAngle - 90));
         }
         else
         {
@@ -44,28 +44,44 @@ public class EnemyPresenter : IEnemyPresenter
         }
     }
 
-    private void HandleViewCollision(Collider2D other)
+    private void HandleOnModelHealtsChanged(int healts)
     {
-        //if (other.CompareTag("Projectile"))
-        //{
-        //    IEnemyView enemy = other.GetComponent<IEnemyView>();
-        //    if (enemy != null)
-        //    {
-        //        enemy.TakeDamage(_model.Type.Damage);
-        //    }
-        //}
-        //DestroyEnemy();
+       
+    }
+
+    private void HandleOnViewTakeDamageTriggered(int damage)
+    {
+        _model.TakeDamage(damage);
+    }
+    private void HandleOnViewCollider2DTriggered(Collider2D other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            IPlayerView player = other.GetComponent<IPlayerView>();
+            if (player != null)
+            {
+                player.TakeDamage(_model.Type.Damage);
+            }
+            OnPresenterEnemyDestoyed?.Invoke(_model);
+            DestroyEnemy();
+        }
     }
 
     private void DestroyEnemy()
     {
-        _view.OnViewCollider2DTriggered -= HandleViewCollision;
+        _view.OnViewCollider2DTriggered -= HandleOnViewCollider2DTriggered;
+        _view.OnViewTakeDamageTriggered -= HandleOnViewTakeDamageTriggered;
+        _model.OnModelHealtsChanged -= HandleOnModelHealtsChanged;
         _manager.UnregisterEnemyPresenter(this);
-
+        if (_view.GetGameObject() != null)
+        {
+            MonoBehaviour.Destroy(_view.GetGameObject());        
+        }
     }
 
     public void Dispose()
     {
+        
         DestroyEnemy();
     }
 

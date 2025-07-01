@@ -7,6 +7,7 @@ public class GameModel : IGameModel
 {
     public ICollection<IWaveModel> Waves { get; set; }
     public IPlayerModel Player { get; set; }
+    public IStatisticalItemModel CoinsStatisticalItemModel { get; set; }
 
     private IWaveModel _currentWave;
     public IWaveModel CurrentWave 

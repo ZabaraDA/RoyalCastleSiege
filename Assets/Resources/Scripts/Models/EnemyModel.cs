@@ -1,9 +1,30 @@
+using System;
 using UnityEngine;
 
 public class EnemyModel : IEnemyModel
 {
     public int Number { get; set; }
-    public int Healts { get; set; }
+    private int _healts;
+
+    public event Action<int> OnModelHealtsChanged;
+
+    public int Healts 
+    {
+        get
+        {
+            return _healts;
+        }
+        set
+        {
+            if (_healts != value)
+            {
+                _healts = value;
+                OnModelHealtsChanged?.Invoke(_healts);
+                Debug.Log($"Field '{nameof(Healts)}' changed in model");
+            }
+        }
+    }
+
     public IEnemyTypeModel Type { get; set; }
 
     public bool IsAlive => Healts > 0;
@@ -25,6 +46,10 @@ public class EnemyModel : IEnemyModel
         //ToDo
         Vector2 directon = (TargetPosition - Position).normalized;
         Position += deltaTime * Type.Speed * directon;
-        Debug.Log(Position);
+    }
+
+    public void TakeDamage(int damage)
+    {
+        Healts -= damage;
     }
 }

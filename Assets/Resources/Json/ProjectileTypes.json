@@ -3,25 +3,25 @@
     {
       "id": 1,
       "damage": 1,
-      "speed" : 100,
+      "speed" : 1000,
       "cost": 15
     },
     {
       "id": 2,
       "damage": 2,
-      "speed": 150,
+      "speed": 1500,
       "cost": 25
     },
     {
       "id": 3,
       "damage": 3,
-      "speed": 100,
+      "speed": 1000,
       "cost": 50
     },
     {
       "id": 4,
       "damage": 4,
-      "speed": 250,
+      "speed": 2500,
       "cost": 100
     }
   ]

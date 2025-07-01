@@ -22,6 +22,7 @@ public class ProjectileView : MonoBehaviour, IProjectileView
 
     void OnTriggerEnter2D(Collider2D other)
     {
+        Debug.Log("OnViewCollider2DTriggered");
         OnViewCollider2DTriggered?.Invoke(other);
     }
 }

@@ -6,8 +6,6 @@ public class ProjectileTypeModel : IProjectileTypeModel
     public float Speed { get; private set; }
     public int Damage { get; private set; }
     public float LifeTime { get; private set; }
-
-    // Конструктор только для свойств ТИПА
     public ProjectileTypeModel(int id, float speed, int damage, float lifeTime)
     {
         Id = id;

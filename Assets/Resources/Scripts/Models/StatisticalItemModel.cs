@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class StatisticalItemModel : IStatisticalItemModel
 {
-
     private int _count;
     public int Count
     {
@@ -36,4 +35,26 @@ public class StatisticalItemModel : IStatisticalItemModel
 
     public event Action<int> OnModelCountChanged;
     public event Action<string> OnModelNameChanged;
+    
+    public StatisticalItemModel( int count, string name)
+    {
+        Count = count;
+        Name = name;
+    }
+
+    public void SetName(string name)
+    {
+        Name = name;
+    }
+
+    public void SetCount(int count)
+    {
+       Debug.Log("SetCount: " + count);
+       Count = count;
+    }
+
+    public void AddCount(int count)
+    {
+        Count += count;
+    }
 }

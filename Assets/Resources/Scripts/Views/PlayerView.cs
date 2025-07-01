@@ -5,6 +5,8 @@ public class PlayerView : MonoBehaviour, IPlayerView
 {
 
     public event Action<Vector3,Vector3> OnViewMouseButtonClick;
+    public event Action<int> OnViewTakeDamageTriggered;
+
     [SerializeField]
     private GameObject _firePointGameObject;
 
@@ -20,5 +22,10 @@ public class PlayerView : MonoBehaviour, IPlayerView
             Debug.Log("PlayerView position: " + mousePosition);
             OnViewMouseButtonClick?.Invoke(mousePosition, _firePointGameObject.transform.position);
         }
+    }
+
+    public void TakeDamage(int damage)
+    {
+        OnViewTakeDamageTriggered?.Invoke(damage);
     }
 }

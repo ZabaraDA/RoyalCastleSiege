@@ -17,8 +17,19 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private GameObject _spawnContainer;
 
+    [SerializeField]
+    private StatisticalItemView _levelStatisticalItemView;
+    [SerializeField]
+    private StatisticalItemView _coinsStatisticalItemView;
+    [SerializeField]
+    private StatisticalItemView _wavesStatisticalItemView;
+    [SerializeField]
+    private StatisticalItemView _healtsStatisticalItemView;
 
 
+
+    [SerializeField]
+    private float _delayBetweenSpawnsEnemies = 1.5f;
 
     private void Start()
     {
@@ -31,6 +42,7 @@ public class GameManager : MonoBehaviour
                 Damage = type.Damage,
                 Healt = type.Healt,
                 Speed = type.Speed,
+                Prize = type.Prize,
             });
         }
 
@@ -62,7 +74,7 @@ public class GameManager : MonoBehaviour
                 IEnemyCountModel enemyModel = new EnemyCountModel(enemyTypeModel, enemyCount.Count);
                 enemyModels.Add(enemyModel);
             }
-            IWaveModel waveModel = new WaveModel(wave.Number, enemyModels, spawnPosition, _playerGameObject.transform.position);
+            IWaveModel waveModel = new WaveModel(wave.Number, _delayBetweenSpawnsEnemies, enemyModels, spawnPosition, _playerGameObject.transform.position);
             waveModels.Add(waveModel);
         }
         
@@ -70,20 +82,49 @@ public class GameManager : MonoBehaviour
         IProjectileFactory projectileFactory = new ProjectileFactory(_projectileLifeCycleManager);
         IPlayerModel playerModel = new PlayerModel()
         {
-            Healt = 100,
+            Healts = 100,
             ProjectileType = projectileModels.FirstOrDefault(x => x.Id == 1)
         };
         IPlayerView playerView = _playerGameObject.GetComponent<IPlayerView>();
         IPlayerPresenter playerPresenter = new PlayerPresenter(playerView, playerModel, projectileFactory);
         playerPresenter.Initialize();
 
-        IEnemyFactory enemyFactory = new EnemyFactory(_enemyLifeCycleManager);    
-        IWaveFactory waveFactory = new WaveFactory(enemyFactory);
+        
+        //IStatisticalItemView wavesStatisticalItemView = _wavesInfoContainer.GetComponent<IStatisticalItemView>();
+        //IStatisticalItemView levelStatisticalItemView = _levelInfoContainer.GetComponent<IStatisticalItemView>();
+
+        //IStatisticalItemView healtsStatisticalItemView = _healtsInfoContainer.GetComponent<IStatisticalItemView>();
+        //IStatisticalItemModel healtsStatisticalItemModel = new StatisticalItemModel(playerModel.Healts, "Healts");
+        //IStatisticalItemPresenter healtsStatisticalItemPresenter = new StatisticalItemPresenter(healtsStatisticalItemView, healtsStatisticalItemModel);
+        //healtsStatisticalItemPresenter.Initialize();
+
+        IStatisticalItemModel healtsStatisticalItemModel = InitializeStatisticalItem(_healtsStatisticalItemView, playerModel.Healts, "Healts");
+        playerModel.OnModelHealtChanged += (newHealts) => healtsStatisticalItemModel.SetCount(newHealts);
+        IStatisticalItemModel coinsStatisticalItemModel = InitializeStatisticalItem(_healtsStatisticalItemView, 0, "Coins");
+        IStatisticalItemModel wavesStatisticalItemModel = InitializeStatisticalItem(_healtsStatisticalItemView, 1, "Waves");
+        IStatisticalItemModel levelStatisticalItemModel = InitializeStatisticalItem(_healtsStatisticalItemView, 1, "Level");
+
+        IEnemyFactory enemyFactory = new EnemyFactory(_enemyLifeCycleManager, coinsStatisticalItemModel);    
+        IWaveFactory waveFactory = new WaveFactory(enemyFactory, this);
         IGameModel gameModel = new GameModel(waveModels, playerModel);
         IGameView gameView = _gameContainerGameObject.GetComponent<GameView>();
         IGamePresenter gamePresenter = new GamePresenter(gameView, gameModel, waveFactory);
 
         gamePresenter.Initialize();
+    }
+
+
+    private IStatisticalItemModel InitializeStatisticalItem(IStatisticalItemView view, int count, string name)
+    {
+        IStatisticalItemModel model = new StatisticalItemModel(count, name);
+        IStatisticalItemPresenter presenter = new StatisticalItemPresenter(view, model);
+        presenter.Initialize();
+        return model;
+    }
+
+    private void OnDestroy()
+    {
+        
     }
 
     private ICollection<WaveData> GetWavesInJson()

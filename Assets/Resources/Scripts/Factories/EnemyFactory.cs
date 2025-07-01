@@ -6,10 +6,14 @@ public class EnemyFactory : IEnemyFactory
 {
     private EnemyLifeCycleManager _manager;
 
-    public EnemyFactory(EnemyLifeCycleManager manager)
+    public EnemyFactory(EnemyLifeCycleManager manager, IStatisticalItemModel coinsStatisticalItemModel)
     { 
         _manager = manager;
+        CoinsStatisticalItemModel = coinsStatisticalItemModel;
     }
+
+    public IStatisticalItemModel CoinsStatisticalItemModel { get; set; }
+
     public IEnemyPresenter CreateEnemy(int id, Vector2 startPosition, Vector2 direction, IEnemyTypeModel enemyTypeModel)
     {
         IEnemyModel model = new EnemyModel(id, startPosition, direction, enemyTypeModel);
@@ -18,16 +22,15 @@ public class EnemyFactory : IEnemyFactory
 
     public IEnemyPresenter CreateEnemy(IEnemyModel enemyModel)
     {
-        float angle = Mathf.Atan2(enemyModel.TargetPosition.y, enemyModel.TargetPosition.x) * Mathf.Rad2Deg;
-        Quaternion quaternion = Quaternion.Euler(new Vector3(0, 0, angle - 90));
 
         GameObject projectilePrefab = Resources.Load<GameObject>("Prefabs/Game Prefabs/Enemy");
-        GameObject projectile = Object.Instantiate(projectilePrefab, enemyModel.Position, quaternion);
+        GameObject projectile = Object.Instantiate(projectilePrefab, enemyModel.Position, Quaternion.identity);
 
         IEnemyView view = projectile.GetComponent<IEnemyView>();
 
         IEnemyPresenter presenter = new EnemyPresenter(view, enemyModel, _manager);
         presenter.Initialize(); // Инициализируем презентер
+        presenter.OnPresenterEnemyDestoyed += (model) => CoinsStatisticalItemModel.AddCount(model.Type.Prize);
 
         return presenter;
     }

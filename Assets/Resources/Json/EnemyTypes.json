@@ -3,20 +3,23 @@
     {
       "id": 1,
       "healt": 3,
-      "speed": 100,
-      "damage": 1
+      "speed": 500,
+      "damage": 1,
+      "prize" : 3
     },
     {
       "id": 2,
       "healt": 3,
       "speed": 200,
-      "damage": 2
+      "damage": 2,
+      "prize": 5
     },
     {
       "id": 3,
       "healt": 10,
       "speed": 100,
-      "damage": 3
+      "damage": 3,
+      "prize": 5
     }
   ]
 }

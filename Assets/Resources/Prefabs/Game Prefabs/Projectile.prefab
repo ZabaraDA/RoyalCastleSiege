@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1657729024592171323}
-  - component: {fileID: 4931627086066346870}
   - component: {fileID: 3012615093205519228}
   - component: {fileID: 8830135753882616787}
   - component: {fileID: 9087542756392664681}
@@ -36,21 +35,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4931627086066346870
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6596220021751758635}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e903105ab82298840bbbdd1dcc340879, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 300
-  damage: 1
-  lifetime: 50
 --- !u!212 &3012615093205519228
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -161,13 +145,13 @@ Rigidbody2D:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6596220021751758635}
   m_BodyType: 0
-  m_Simulated: 0
+  m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDamping: 0
   m_AngularDamping: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -191,5 +175,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 622719f4d884483438d2249b3c87560e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _moveDirection: {x: 0, y: 0}
-  _speed: 100

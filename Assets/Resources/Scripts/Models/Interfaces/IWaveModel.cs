@@ -3,6 +3,7 @@ using UnityEngine;
 
 public interface IWaveModel
 {
+    float DelayBetweenSpawnsEnemies { get; set; }
     int Number { get; set; }
     ICollection<IEnemyCountModel> EnemiesCount { get; set; }
     List<Vector2> SpawnPositions { get; set; }

@@ -4,6 +4,7 @@ using UnityEngine;
 public class EnemyView : MonoBehaviour, IEnemyView
 {
     public event Action<Collider2D> OnViewCollider2DTriggered;
+    public event Action<int> OnViewTakeDamageTriggered;
 
     public void SetPosition(Vector2 newPosition)
     {
@@ -27,6 +28,6 @@ public class EnemyView : MonoBehaviour, IEnemyView
 
     public void TakeDamage(int damage)
     {
-        
+        OnViewTakeDamageTriggered?.Invoke(damage);
     }
 }

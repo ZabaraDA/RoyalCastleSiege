@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public interface IEnemyModel
@@ -9,5 +10,8 @@ public interface IEnemyModel
     Vector2 Position { get; set; }
     Vector2 TargetPosition { get; set; }
 
+    event Action<int> OnModelHealtsChanged;
+
     void UpdatePosition(float deltaTime);
+    void TakeDamage(int damage);
 }

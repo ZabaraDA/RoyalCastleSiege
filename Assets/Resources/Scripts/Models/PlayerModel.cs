@@ -4,7 +4,7 @@ using UnityEngine;
 public class PlayerModel : IPlayerModel
 {
     private int _healt;
-    public int Healt 
+    public int Healts 
     {
         get => _healt;
         set
@@ -13,7 +13,7 @@ public class PlayerModel : IPlayerModel
             {
                 _healt = value;
                 OnModelHealtChanged?.Invoke(_healt);
-                Debug.Log($"Field '{nameof(Healt)}' changed in model");
+                Debug.Log($"Field '{nameof(Healts)}' changed in class {GetType()}. Value: {Healts}");
             }
         }
     }
@@ -27,7 +27,7 @@ public class PlayerModel : IPlayerModel
             {
                 _projectileType = value;
                 OnModelProjectileTypeChanged?.Invoke(_projectileType);
-                Debug.Log($"Field '{nameof(ProjectileType)}' changed in model");
+                Debug.Log($"Field '{nameof(ProjectileType)}' changed in class {GetType()}. Value: {ProjectileType}");
             }
         }
     }
@@ -35,4 +35,22 @@ public class PlayerModel : IPlayerModel
 
     public event Action<int> OnModelHealtChanged;
     public event Action<IProjectileTypeModel> OnModelProjectileTypeChanged;
+
+    public float FireRate { get; set; } = 2f; // Значение по умолчанию
+    public float NextFireTime { get; set; } // Инициализируется Presenter'ом или при создании модели
+
+    public bool CanFire()
+    {
+        return Time.time >= NextFireTime;
+    }
+
+    public void SetLastFireTime(float currentTime)
+    {
+        NextFireTime = currentTime + (1f / FireRate);
+    }
+
+    public void TakeDamage(int damage)
+    {
+        Healts -= damage;
+    }
 }

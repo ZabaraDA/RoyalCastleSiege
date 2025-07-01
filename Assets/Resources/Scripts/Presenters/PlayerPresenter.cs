@@ -20,14 +20,31 @@ public class PlayerPresenter : IPlayerPresenter
 
     public void Initialize()
     {
-        _view.OnViewMouseButtonClick += OnViewMouseButtonClick;
+        _view.OnViewMouseButtonClick += HandleOnViewMouseButtonClick;
+        _view.OnViewTakeDamageTriggered += HandleOnViewTakeDamageTriggered;
     }
 
-    private void OnViewMouseButtonClick(Vector3 clickPosition, Vector3 firePosition)
+    private void HandleOnViewTakeDamageTriggered(int damage)
     {
-        // Направление снаряда от FirePoint до позиции клика
-        Vector2 projectileDirection = (clickPosition - firePosition).normalized;
-        _projectileFactory.CreateProjectile(1, firePosition, projectileDirection, _model.ProjectileType);
-        
+        _model.TakeDamage(damage);
+    }
+    private void HandleOnViewMouseButtonClick(Vector3 clickPosition, Vector3 firePosition)
+    {
+        // Логика кулдауна теперь вызывается из модели
+        if (_model.CanFire())
+        {
+            // Разрешаем выстрел
+            Vector2 projectileDirection = (clickPosition - firePosition).normalized;
+            _projectileFactory.CreateProjectile(1, firePosition, projectileDirection, _model.ProjectileType);
+
+            // Обновляем время следующего разрешенного выстрела в модели
+            _model.SetLastFireTime(Time.time);
+
+            Debug.Log("Выстрел произведен.Следующий выстрел возможен в: " + _model.NextFireTime);
+        }
+        else
+        {
+            Debug.Log("Невозможно стрелять. Кулдаун активен. Осталось: " + (_model.NextFireTime - Time.time).ToString("F2") + "с");
+        }
     }
 }
