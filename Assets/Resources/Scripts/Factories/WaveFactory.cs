@@ -4,6 +4,7 @@ public class WaveFactory : IWaveFactory
 {
     private IEnemyFactory _enemyFactory;
     private MonoBehaviour _corutineRunner;
+    //IStatisticalItemModel _wavesStatisticalItemModel;
 
     public WaveFactory(IEnemyFactory enemyFactory, MonoBehaviour corutineRunner)
     {
@@ -20,6 +21,7 @@ public class WaveFactory : IWaveFactory
 
         IWavePresenter presenter = new WavePresenter(view, waveModel, _enemyFactory, _corutineRunner);
         presenter.Initialize(); // Инициализируем презентер
+        //waveModel.OnModelNumberOnChanged += _wavesStatisticalItemModel.SetCount;
 
         return presenter;
     }

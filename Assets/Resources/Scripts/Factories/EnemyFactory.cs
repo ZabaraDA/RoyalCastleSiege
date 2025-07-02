@@ -30,7 +30,7 @@ public class EnemyFactory : IEnemyFactory
 
         IEnemyPresenter presenter = new EnemyPresenter(view, enemyModel, _manager);
         presenter.Initialize(); // Инициализируем презентер
-        presenter.OnPresenterEnemyDestoyed += (model) => CoinsStatisticalItemModel.AddCount(model.Type.Prize);
+        presenter.OnPresenterEnemyModelDestoyed += (model) => CoinsStatisticalItemModel.AddCount(model.Type.Prize);
 
         return presenter;
     }

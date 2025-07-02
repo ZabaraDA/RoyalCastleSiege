@@ -89,26 +89,17 @@ public class GameManager : MonoBehaviour
         IPlayerPresenter playerPresenter = new PlayerPresenter(playerView, playerModel, projectileFactory);
         playerPresenter.Initialize();
 
-        
-        //IStatisticalItemView wavesStatisticalItemView = _wavesInfoContainer.GetComponent<IStatisticalItemView>();
-        //IStatisticalItemView levelStatisticalItemView = _levelInfoContainer.GetComponent<IStatisticalItemView>();
-
-        //IStatisticalItemView healtsStatisticalItemView = _healtsInfoContainer.GetComponent<IStatisticalItemView>();
-        //IStatisticalItemModel healtsStatisticalItemModel = new StatisticalItemModel(playerModel.Healts, "Healts");
-        //IStatisticalItemPresenter healtsStatisticalItemPresenter = new StatisticalItemPresenter(healtsStatisticalItemView, healtsStatisticalItemModel);
-        //healtsStatisticalItemPresenter.Initialize();
-
         IStatisticalItemModel healtsStatisticalItemModel = InitializeStatisticalItem(_healtsStatisticalItemView, playerModel.Healts, "Healts");
         playerModel.OnModelHealtChanged += (newHealts) => healtsStatisticalItemModel.SetCount(newHealts);
-        IStatisticalItemModel coinsStatisticalItemModel = InitializeStatisticalItem(_healtsStatisticalItemView, 0, "Coins");
-        IStatisticalItemModel wavesStatisticalItemModel = InitializeStatisticalItem(_healtsStatisticalItemView, 1, "Waves");
-        IStatisticalItemModel levelStatisticalItemModel = InitializeStatisticalItem(_healtsStatisticalItemView, 1, "Level");
+        IStatisticalItemModel coinsStatisticalItemModel = InitializeStatisticalItem(_coinsStatisticalItemView, 0, "Coins");
+        IStatisticalItemModel wavesStatisticalItemModel = InitializeStatisticalItem(_wavesStatisticalItemView, 1, "Wave");
+        IStatisticalItemModel levelStatisticalItemModel = InitializeStatisticalItem(_levelStatisticalItemView, 1, "Level");
 
         IEnemyFactory enemyFactory = new EnemyFactory(_enemyLifeCycleManager, coinsStatisticalItemModel);    
         IWaveFactory waveFactory = new WaveFactory(enemyFactory, this);
         IGameModel gameModel = new GameModel(waveModels, playerModel);
         IGameView gameView = _gameContainerGameObject.GetComponent<GameView>();
-        IGamePresenter gamePresenter = new GamePresenter(gameView, gameModel, waveFactory);
+        IGamePresenter gamePresenter = new GamePresenter(gameView, gameModel, waveFactory, wavesStatisticalItemModel);
 
         gamePresenter.Initialize();
     }

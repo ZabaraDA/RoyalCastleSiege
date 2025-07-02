@@ -7,7 +7,6 @@ public interface IGameModel
     ICollection<IWaveModel> Waves { get; set; }
     IWaveModel CurrentWave { get; set; }
     IPlayerModel Player { get; set; }
-    IStatisticalItemModel CoinsStatisticalItemModel { get; set; }
 
     event Action<IWaveModel> OnModelCurrentWaveChanged;
 

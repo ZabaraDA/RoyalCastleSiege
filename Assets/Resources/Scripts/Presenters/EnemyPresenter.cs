@@ -7,7 +7,8 @@ public class EnemyPresenter : IEnemyPresenter
     private IEnemyModel _model;
     private EnemyLifeCycleManager _manager;
 
-    public event Action<IEnemyModel> OnPresenterEnemyDestoyed;
+    public event Action<IEnemyModel> OnPresenterEnemyModelDestoyed;
+    public event Action<IEnemyPresenter> OnPresenterEnemyPresenterDestoyed;
 
     public EnemyPresenter(IEnemyView view, IEnemyModel model, EnemyLifeCycleManager manager)
     {
@@ -62,7 +63,8 @@ public class EnemyPresenter : IEnemyPresenter
             {
                 player.TakeDamage(_model.Type.Damage);
             }
-            OnPresenterEnemyDestoyed?.Invoke(_model);
+            OnPresenterEnemyModelDestoyed?.Invoke(_model);
+            OnPresenterEnemyPresenterDestoyed?.Invoke(this);
             DestroyEnemy();
         }
     }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class WavePresenter : IWavePresenter
@@ -7,7 +8,8 @@ public class WavePresenter : IWavePresenter
     private IWaveView _view;
     private IWaveModel _model;
     private IEnemyFactory _enemyFactory;
-    private MonoBehaviour _coroutineRunner; // <<< НОВОЕ ПОЛЕ: Для запуска корутин
+    private MonoBehaviour _coroutineRunner;
+    private ICollection<IEnemyPresenter> _enemyPresenterList;
 
     public event Action<IWaveModel> OnPresenterWaveCompleted;
 
@@ -18,6 +20,7 @@ public class WavePresenter : IWavePresenter
         _model = model;
         _enemyFactory = enemyFactory;
         _coroutineRunner = coroutineRunner; // Сохраняем ссылку на объект, который может запускать корутины
+        _enemyPresenterList = new List<IEnemyPresenter>();
     }
 
     public void Dispose()
@@ -31,7 +34,7 @@ public class WavePresenter : IWavePresenter
     }
 
     // Этот метод теперь будет запускать корутину спавна
-    public void StartWave() // Переименовал Start() в StartWave() для ясности
+    public void StartWave()
     {
         if (_coroutineRunner == null)
         {
@@ -42,6 +45,19 @@ public class WavePresenter : IWavePresenter
         _coroutineRunner.StartCoroutine(SpawnEnemiesWithDelayCoroutine());
     }
 
+    public void EndWave()
+    {
+        Dispose();
+        OnPresenterWaveCompleted?.Invoke(_model);
+    }
+    private void HandleOnPresenterEnemyDestoyed(IEnemyPresenter enemyPresenter)
+    {
+        _enemyPresenterList.Remove(enemyPresenter);
+        if (_enemyPresenterList.Count < 1)
+        {
+            EndWave();
+        }
+    }
     private IEnumerator SpawnEnemiesWithDelayCoroutine()
     {
 
@@ -60,12 +76,15 @@ public class WavePresenter : IWavePresenter
                 Vector2 spawnPosition = _model.SpawnPositions[UnityEngine.Random.Range(0, _model.SpawnPositions.Count)];
 
                 // Создаем врага
-                _enemyFactory.CreateEnemy(
+                var enemyPresenter = _enemyFactory.CreateEnemy(
                     i, // Номер врага (если нужен для уникальности)
                     spawnPosition,
                     _model.TargetPosition, // Целевая позиция (если враги к ней движутся)
                     enemyCountEntry.EnemyType
                 );
+                _enemyPresenterList.Add(enemyPresenter);
+
+                enemyPresenter.OnPresenterEnemyPresenterDestoyed += HandleOnPresenterEnemyDestoyed;
 
                 Debug.Log($"Спавн врага типа {enemyCountEntry.EnemyType.Id} в позиции {spawnPosition}.");
 
