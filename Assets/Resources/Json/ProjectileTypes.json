@@ -2,7 +2,7 @@
   "value": [
     {
       "id": 1,
-      "damage": 2,
+      "damage": 1,
       "speed": 1000,
       "cost": 15
     },
@@ -26,9 +26,9 @@
     },
     {
       "id": 5,
-      "damage": 1,
+      "damage": 10,
       "speed": 1000,
-      "cost": 0
+      "cost": 150
     }
   ]
 }

@@ -2,22 +2,22 @@
   "value": [
     {
       "id": 1,
-      "healt": 3,
-      "speed": 500,
+      "healt": 1,
+      "speed": 200,
       "damage": 1,
       "prize" : 3
     },
     {
       "id": 2,
-      "healt": 3,
-      "speed": 200,
+      "healt": 2,
+      "speed": 500,
       "damage": 2,
       "prize": 5
     },
     {
       "id": 3,
       "healt": 10,
-      "speed": 100,
+      "speed": 300,
       "damage": 3,
       "prize": 5
     }

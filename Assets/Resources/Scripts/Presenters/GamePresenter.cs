@@ -1,5 +1,6 @@
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GamePresenter : IGamePresenter
 {
@@ -40,6 +41,14 @@ public class GamePresenter : IGamePresenter
     private void LoadNextWave(IWaveModel currentModel)
     {
         _model.CurrentWave = _model.Waves.FirstOrDefault(x => x.Number == (currentModel.Number + 1));
+        //if (wave != null)
+        //{
+        //    _model.CurrentWave = wave;
+        //}
+        //else
+        //{
+        //    SceneManager.LoadScene(0);
+        //}
     }
     private void HandleOnPresenterWaveCompleted(IWaveModel waveModel)
     {

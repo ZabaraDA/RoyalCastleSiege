@@ -64,7 +64,7 @@ public class GameManager : MonoBehaviour
         Debug.Log("Enemy types: " + enemyTypes.Count);
         ICollection<IProjectileTypeModel> projectileModels = new List<IProjectileTypeModel>();
         Sprite[] projectileSpritesInAtlas = Resources.LoadAll<Sprite>("Images/Arrows");
-        foreach (ProjectileTypeData projectileType in GetProjectileTypesInJson())
+        foreach (ProjectileTypeData projectileType in GetProjectileTypesInJson().Where(x => x.Id != 5))
         {
             var projectileTypeModel = new ProjectileTypeModel(projectileType.Id, projectileType.Speed, projectileType.Damage, 100, projectileType.Cost, projectileSpritesInAtlas[projectileType.Id - 1]);
             projectileModels.Add(projectileTypeModel);
@@ -110,9 +110,9 @@ public class GameManager : MonoBehaviour
         _playerModel = new PlayerModel()
         {
             Healts = 100,
-            ProjectileType = projectileModels.FirstOrDefault(x => x.Id == 5)
+            ProjectileType = projectileModels.FirstOrDefault(x => x.Id == 1)
         };
-        SetSelectedProjectile(projectileModels.FirstOrDefault(x => x.Id == 5));
+        SetSelectedProjectile(projectileModels.FirstOrDefault(x => x.Id == 1));
         IPlayerView playerView = _playerGameObject.GetComponent<IPlayerView>();
         IPlayerPresenter playerPresenter = new PlayerPresenter(playerView, _playerModel, projectileFactory);
         playerPresenter.Initialize();
