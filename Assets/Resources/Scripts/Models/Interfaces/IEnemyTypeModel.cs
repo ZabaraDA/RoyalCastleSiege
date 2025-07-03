@@ -7,4 +7,6 @@ public interface IEnemyTypeModel
     int Speed { get; set; }
     int Damage { get; set; }
     int Prize { get; set; }
+
+    Sprite Sprite { get; set; }
 }

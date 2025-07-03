@@ -17,6 +17,8 @@ public class ProjectilePresenter : IProjectilePresenter
         _view.OnViewCollider2DTriggered += HandleOnViewCollider2DTriggered;
         _view.SetPosition(_model.Position);
 
+        _view.SetSprite(_model.Sprite);
+
         _manager.RegisterProjectilePresenter(this);
     }
 

@@ -11,4 +11,5 @@ public interface IEnemyView
     event Action<Collider2D> OnViewCollider2DTriggered;
     event Action<int> OnViewTakeDamageTriggered;
     void TakeDamage(int damage);
+    void SetSprite(Sprite sprite);
 }

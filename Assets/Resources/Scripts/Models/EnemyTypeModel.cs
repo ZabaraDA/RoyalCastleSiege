@@ -7,4 +7,5 @@ public class EnemyTypeModel : IEnemyTypeModel
     public int Speed { get; set; }
     public int Damage { get; set; }
     public int Prize { get; set; }
+    public Sprite Sprite { get; set; }
 }

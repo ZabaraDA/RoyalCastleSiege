@@ -1,8 +1,11 @@
 using System;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ProjectileView : MonoBehaviour, IProjectileView
 {
+    [SerializeField]
+    private SpriteRenderer _spriteRenderer;
     public event Action<Collider2D> OnViewCollider2DTriggered;
 
     public void SetPosition(Vector2 newPosition)
@@ -24,5 +27,10 @@ public class ProjectileView : MonoBehaviour, IProjectileView
     {
         Debug.Log("OnViewCollider2DTriggered");
         OnViewCollider2DTriggered?.Invoke(other);
+    }
+
+    public void SetSprite(Sprite sprite)
+    {
+        _spriteRenderer.sprite = sprite;
     }
 }

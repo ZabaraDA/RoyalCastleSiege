@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 2188738636604081906}
   m_Layer: 0
   m_Name: Projectile
-  m_TagString: Untagged
+  m_TagString: Projectile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -79,7 +79,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 5
-  m_Sprite: {fileID: 2319643638384702094, guid: a77ab08061e7b8f4eae0b289a038af63, type: 3}
+  m_Sprite: {fileID: -1033766676993296678, guid: a77ab08061e7b8f4eae0b289a038af63, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -128,7 +128,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.38, y: 3.71}
+    oldSize: {x: 0.31, y: 2.97}
     newSize: {x: 0.38, y: 3.71}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -175,3 +175,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 622719f4d884483438d2249b3c87560e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _spriteRenderer: {fileID: 3012615093205519228}

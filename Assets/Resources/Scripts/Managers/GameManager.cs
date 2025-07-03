@@ -2,6 +2,7 @@ using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -16,6 +17,8 @@ public class GameManager : MonoBehaviour
     private EnemyLifeCycleManager _enemyLifeCycleManager;
     [SerializeField]
     private GameObject _spawnContainer;
+    [SerializeField]
+    private GameObject _shopContainer;
 
     [SerializeField]
     private StatisticalItemView _levelStatisticalItemView;
@@ -25,15 +28,26 @@ public class GameManager : MonoBehaviour
     private StatisticalItemView _wavesStatisticalItemView;
     [SerializeField]
     private StatisticalItemView _healtsStatisticalItemView;
+    [SerializeField] 
+    private Image _sellectedArrowImage;
 
 
 
     [SerializeField]
     private float _delayBetweenSpawnsEnemies = 1.5f;
 
+    [SerializeField]
+    private IPlayerModel _playerModel;
+
     private void Start()
     {
+        
+        IStatisticalItemModel coinsStatisticalItemModel = InitializeStatisticalItem(_coinsStatisticalItemView, 0, "Coins");
+        IStatisticalItemModel wavesStatisticalItemModel = InitializeStatisticalItem(_wavesStatisticalItemView, 1, "Wave");
+        IStatisticalItemModel levelStatisticalItemModel = InitializeStatisticalItem(_levelStatisticalItemView, 1, "Level");
+
         ICollection<IEnemyTypeModel> enemyTypes = new List<IEnemyTypeModel>();
+        Sprite[] enemySpritesInAtlas = Resources.LoadAll<Sprite>("Images/Enemies");
         foreach (var type in GetEnemyTypesInJson())
         {
             enemyTypes.Add(new EnemyTypeModel
@@ -43,15 +57,28 @@ public class GameManager : MonoBehaviour
                 Healt = type.Healt,
                 Speed = type.Speed,
                 Prize = type.Prize,
+                Sprite = enemySpritesInAtlas[type.Id - 1]
             });
         }
 
         Debug.Log("Enemy types: " + enemyTypes.Count);
         ICollection<IProjectileTypeModel> projectileModels = new List<IProjectileTypeModel>();
+        Sprite[] projectileSpritesInAtlas = Resources.LoadAll<Sprite>("Images/Arrows");
         foreach (ProjectileTypeData projectileType in GetProjectileTypesInJson())
         {
-            projectileModels.Add(new ProjectileTypeModel(projectileType.Id, projectileType.Speed, projectileType.Damage, 100));
+            var projectileTypeModel = new ProjectileTypeModel(projectileType.Id, projectileType.Speed, projectileType.Damage, 100, projectileType.Cost, projectileSpritesInAtlas[projectileType.Id - 1]);
+            projectileModels.Add(projectileTypeModel);
+
+            GameObject projectilePrefab = Resources.Load<GameObject>("Prefabs/Game Prefabs/Shop Item Container");
+            var projectile = MonoBehaviour.Instantiate(projectilePrefab, _shopContainer.transform);
+            ProductView productView = projectile.GetComponent<ProductView>();
+            productView.SetCoinsStatisticalItemModel(coinsStatisticalItemModel);
+            productView.SetProjectile(projectileTypeModel);
+            Debug.Log("productView is null " + (productView == null));
+            productView.OnClickBuyPrjectileTriggered += SetSelectedProjectile;
+
         }
+        Debug.Log("Projectile types: " + projectileModels.Count);
 
         ICollection<IWaveModel> waveModels = new List<IWaveModel>();
 
@@ -80,31 +107,34 @@ public class GameManager : MonoBehaviour
         
 
         IProjectileFactory projectileFactory = new ProjectileFactory(_projectileLifeCycleManager);
-        IPlayerModel playerModel = new PlayerModel()
+        _playerModel = new PlayerModel()
         {
             Healts = 100,
-            ProjectileType = projectileModels.FirstOrDefault(x => x.Id == 1)
+            ProjectileType = projectileModels.FirstOrDefault(x => x.Id == 5)
         };
+        SetSelectedProjectile(projectileModels.FirstOrDefault(x => x.Id == 5));
         IPlayerView playerView = _playerGameObject.GetComponent<IPlayerView>();
-        IPlayerPresenter playerPresenter = new PlayerPresenter(playerView, playerModel, projectileFactory);
+        IPlayerPresenter playerPresenter = new PlayerPresenter(playerView, _playerModel, projectileFactory);
         playerPresenter.Initialize();
+        IStatisticalItemModel healtsStatisticalItemModel = InitializeStatisticalItem(_healtsStatisticalItemView, _playerModel.Healts, "Healts");
+        _playerModel.OnModelHealtChanged += (newHealts) => healtsStatisticalItemModel.SetCount(newHealts);
 
-        IStatisticalItemModel healtsStatisticalItemModel = InitializeStatisticalItem(_healtsStatisticalItemView, playerModel.Healts, "Healts");
-        playerModel.OnModelHealtChanged += (newHealts) => healtsStatisticalItemModel.SetCount(newHealts);
-        IStatisticalItemModel coinsStatisticalItemModel = InitializeStatisticalItem(_coinsStatisticalItemView, 0, "Coins");
-        IStatisticalItemModel wavesStatisticalItemModel = InitializeStatisticalItem(_wavesStatisticalItemView, 1, "Wave");
-        IStatisticalItemModel levelStatisticalItemModel = InitializeStatisticalItem(_levelStatisticalItemView, 1, "Level");
+
 
         IEnemyFactory enemyFactory = new EnemyFactory(_enemyLifeCycleManager, coinsStatisticalItemModel);    
         IWaveFactory waveFactory = new WaveFactory(enemyFactory, this);
-        IGameModel gameModel = new GameModel(waveModels, playerModel);
+        IGameModel gameModel = new GameModel(waveModels, _playerModel);
         IGameView gameView = _gameContainerGameObject.GetComponent<GameView>();
         IGamePresenter gamePresenter = new GamePresenter(gameView, gameModel, waveFactory, wavesStatisticalItemModel);
 
         gamePresenter.Initialize();
     }
 
-
+    private void SetSelectedProjectile(IProjectileTypeModel projectileTypeModel)
+    {
+        _sellectedArrowImage.sprite = projectileTypeModel.Sprite;
+        _playerModel.ProjectileType = projectileTypeModel;
+    }
     private IStatisticalItemModel InitializeStatisticalItem(IStatisticalItemView view, int count, string name)
     {
         IStatisticalItemModel model = new StatisticalItemModel(count, name);

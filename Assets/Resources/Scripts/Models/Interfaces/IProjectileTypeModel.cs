@@ -6,4 +6,6 @@ public interface IProjectileTypeModel
     float Speed { get; }
     int Damage { get; }
     float LifeTime { get; }
+    int Cost { get; }
+    Sprite Sprite { get; }
 }

@@ -9,7 +9,9 @@ public class ProjectileModel : IProjectileModel
     private float _currentLifetime;
     public bool IsAlive => _currentLifetime < Type.LifeTime;
     public IProjectileTypeModel Type { get; set; }
-        
+
+    public Sprite Sprite => Type.Sprite;
+
     public ProjectileModel(int id, Vector2 position, Vector2 direction, IProjectileTypeModel type)
     {
         Id = id;

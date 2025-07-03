@@ -26,6 +26,7 @@ public class EnemyPresenter : IEnemyPresenter
 
         // Устанавливаем начальное состояние View
         _view.SetPosition(_model.Position);
+        _view.SetSprite(_model.Type.Sprite);
 
         // Регистрируем этот Presenter для получения обновлений
         _manager.RegisterEnemyPresenter(this);
@@ -47,7 +48,12 @@ public class EnemyPresenter : IEnemyPresenter
 
     private void HandleOnModelHealtsChanged(int healts)
     {
-       
+        if (healts <= 0)
+        {
+            OnPresenterEnemyModelDestoyed?.Invoke(_model);
+            OnPresenterEnemyPresenterDestoyed?.Invoke(this);
+            DestroyEnemy();
+        }
     }
 
     private void HandleOnViewTakeDamageTriggered(int damage)
